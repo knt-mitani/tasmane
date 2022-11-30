@@ -3,9 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Task;
+use Auth;
 
 class TasksController extends Controller
 {
+    private $tasks;
+    
+    private $status = [
+        1 => '未対応',
+        2 => '対応中',
+        3 => '完了'
+    ];
+    
+    private $importance = [
+        1 => '高',
+        2 => '中',
+        3 => '低'
+    ];
+    
+    // function __construct()
+    // {
+    //     $this->tasks = new Task;
+    // }
+    
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +34,16 @@ class TasksController extends Controller
      */
     public function index()
     {
-        //
+        if (Auth::check()) {
+            
+            $task = new Task;
+            
+            $tasks = $task->where('user_id', Auth::id())->get();
+
+            return view('tasks.index', ['tasks' => $tasks]);
+        } else {
+            return view('toppage');
+        }
     }
 
     /**
@@ -23,7 +53,20 @@ class TasksController extends Controller
      */
     public function create()
     {
-        //
+        if (Auth::check()) {
+            
+            
+            // $tasks = $this->tasks->where('user_id', Auth::id());
+            
+            $setCreateValue = [
+                'importance' => $this->importance,
+                'status' => $this->status           
+            ];
+
+            return view('tasks.create')->with($setCreateValue);
+        } else {
+            return view('toppage');
+        }
     }
 
     /**
@@ -34,7 +77,20 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $task = new Task;
+        
+        // postデータをセット
+        $task->user_id = Auth::id();
+        $task->title = $request->title;
+        $task->content = $request->content;
+        $task->importance = $request->importance;
+        $task->status = $request->status;
+        $task->deadline = $request->deadline;
+
+        // データをSQLに保存
+        $task->save();
+        
+        return redirect('/');
     }
 
     /**

@@ -21,7 +21,6 @@
                         <th>{{ $task->importance }}</th>
                         <th>{{ $task->deadline }}</th>
                         <th>
-            
                             <form method="GET" action="{{ route('tasks.edit', $task->id) }}"> 
                                 @csrf
                                 <button type="submit">

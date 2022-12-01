@@ -3,13 +3,13 @@
 @section('content')
 
 
-    <div class="flex justify-center text-5xl mt-16">タスク作成</div>
+    <div class="flex justify-center text-4xl mt-12">タスク編集</div>
     
     <div class="flex justify-center">
         <form method="POST" action="{{ route('tasks.update', $task->id) }}" class="w-1/2">
             @csrf
             @method('PUT')
-            <div class="form-control my-16">
+            <div class="form-control mt-8 mb-16">
                 {{-- タスク入力 --}}
                 <label for"title" class="label">
                     <span class="label-text">タスク</span>

@@ -41,6 +41,7 @@ class TasksController extends Controller
             $tasks = $task
                         ->where('user_id', Auth::id())
                         ->where('status', 2)
+                        ->orderByRaw('deadline asc, importance asc, title asc')
                         ->get();
                         
             foreach($tasks as $value)
@@ -76,6 +77,7 @@ class TasksController extends Controller
             $tasks = $task
                         ->where('user_id', Auth::id())
                         ->where('status', 1)
+                        ->orderByRaw('deadline asc, importance asc, title asc')
                         ->get();
             return view('tasks.index', ['tasks' => $tasks]);
         } else {
@@ -92,6 +94,7 @@ class TasksController extends Controller
             $tasks = $task
                         ->where('user_id', Auth::id())
                         ->where('status', 3)
+                        ->orderByRaw('deadline asc, importance asc, title asc')
                         ->get();
 
             return view('tasks.index', ['tasks' => $tasks]);
@@ -131,6 +134,8 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
+        $task = new Task;
+        
         // postデータをセット
         $task->user_id = Auth::id();
         $task->title = $request->title;

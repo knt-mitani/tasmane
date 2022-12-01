@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <a class="btn btn-outline" href="{{ route('tasks.create') }}">作成</a>
-    @include('tasks.tasklist')
+    <div class="flex justify-center text-5xl mt-16">タスク一覧</div>
+    <div class="grid grid-cols-12 gap-10">
+        @include('tasks.tasklist')
+    </div>
 @endsection

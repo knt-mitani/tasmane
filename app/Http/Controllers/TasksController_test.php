@@ -32,19 +32,37 @@ class TasksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($selectTab)
     {
         if (Auth::check()) {
             
-            
-            
             $task = new Task;
             
-            $tasks = $task
-                        ->where('user_id', Auth::id())
-                        ->where('status', 2)
-                        ->get();
+            // $tasks = $task
+            //             ->where('user_id', Auth::id())
+            //             ->where('status', 2)
+            //             ->get();
+            
+            
+            $task->where('user_id', Auth::id());
+            //             ->where('status', 2)
+            //             ->get();
     
+            
+            switch ($selectTab) {
+                case 'notWorking':
+                    $task->where('status', 1);
+                    break;
+                case 'working':
+                    $task->where('status', 2);
+                    break;
+                case 'finishWorking':
+                    $task->where('status', 3);
+                    break;
+            }
+            
+            $tasks = $task->get();
+
             return view('tasks.index', ['tasks' => $tasks]);
         } else {
             return view('toppage');

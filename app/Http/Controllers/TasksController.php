@@ -36,15 +36,31 @@ class TasksController extends Controller
     {
         if (Auth::check()) {
             
-            
-            
             $task = new Task;
             
             $tasks = $task
                         ->where('user_id', Auth::id())
                         ->where('status', 2)
                         ->get();
-    
+                        
+            foreach($tasks as $value)
+            {
+                $check = $value->importance;
+
+                // 状態を名称に変換
+                switch ($value->importance) {
+                    case 1:
+                        $value->importance = $this->importance[1];
+                        break;
+                    case 2:
+                        $value->importance = $this->importance[2];
+                        break;
+                    case 3:
+                        $value->importance = $this->importance[3];
+                        break;
+                }
+            }
+
             return view('tasks.index', ['tasks' => $tasks]);
         } else {
             return view('toppage');
@@ -63,7 +79,6 @@ class TasksController extends Controller
                         ->get();
             return view('tasks.index', ['tasks' => $tasks]);
         } else {
-            dd($tasks);
             return view('toppage');
         }
     }
@@ -116,8 +131,6 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        $task = new Task;
-        
         // postデータをセット
         $task->user_id = Auth::id();
         $task->title = $request->title;
@@ -151,7 +164,14 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
-        //
+        $task = Task::find($id);
+        
+        $setEditValue = [
+            'task' => $task,
+            'importance' => $this->importance,
+            'status' => $this->status,
+        ];
+        return view('tasks.taskedit')->with($setEditValue);
     }
 
     /**
@@ -163,7 +183,17 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $task = Task::find($id);
+        
+        $task->title = $request->title;
+        $task->content = $request->content;
+        $task->importance = $request->importance;
+        $task->status = $request->status;
+        $task->deadline = $request->deadline;
+        
+        $task->save();
+        
+        return redirect('/');
     }
 
     /**
@@ -174,6 +204,12 @@ class TasksController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $task = Task::findOrFail($id);
+        
+        if (Auth::id() === $task->user_id) {
+            $task->delete();
+        }
+        
+        return redirect('/');
     }
 }

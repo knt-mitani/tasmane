@@ -12,24 +12,24 @@
             <div class="form-control mt-8 mb-16">
                 {{-- タスク入力 --}}
                 <label for"title" class="label">
-                    <span class="label-text">現在のパスワード</span>
+                    <span class="label-text text-lg">現在のパスワード</span>
                 </label>
                 <input type="password" class="input input-bordered w-full" value="" name="current_password">
                 {{-- 内容入力 --}}
                 <label for"title" class="label mt-10">
-                    <span class="label-text ">新しいパスワード</span>
+                    <span class="label-text text-lg">新しいパスワード</span>
                 </label>
                 <input type="password" class="input input-bordered w-full" value="" name="new_password">
 
                 {{-- 状態選択 --}}
                 <label for"title" class="label mt-10">
-                    <span class="label-text">新しいパスワード(確認)</span>
+                    <span class="label-text text-lg">新しいパスワード(確認)</span>
                 </label>
                 <input type="password" class="input input-bordered w-full" value="" name="new_password_confirm">
 
                 <div class="flex justify-between mt-16 mx-12">
-                    <button type="submit" class="btn btn-info w-28">変更</button>
-                    <a class="btn btn-grey w-28" href="{{ route('tasks.index') }}">戻る</a>
+                    <button type="submit" class="btn bg-blue-600 text-xl w-28">変更</button>
+                    <a class="btn btn-grey text-xl w-28" href="{{ route('tasks.index') }}">戻る</a>
                 </div>
             </div>
         </form>

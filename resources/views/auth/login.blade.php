@@ -12,29 +12,21 @@
 
             <div class="form-control mt-10">
                 <label for="email" class="label">
-                    <span class="label-text">メールアドレス</span>
+                    <span class="label-text text-lg">メールアドレス</span>
                 </label>
                 <input type="email" name="email" class="input input-bordered w-full">
             </div>
 
             <div class="form-control mt-10">
                 <label for="password" class="label">
-                    <span class="label-text">パスワード</span>
+                    <span class="label-text text-lg">パスワード</span>
                 </label>
                 <input type="password" name="password" class="input input-bordered w-full">
             </div>
 
-            <div class="mt-10">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                        {{ __('パスワードを忘れましたか？') }}
-                    </a>
-                @endif
-            </div>
-
             <div class="flex justify-between mt-16 mx-24">
-                <button type="submit" class="btn btn-primary btn-block normal-case w-28">ログイン</button>
-                <a class="btn btn-grey w-28" href="/">戻る</a>
+                <button type="submit" class="btn btn-info text-xl w-28">ログイン</button>
+                <a class="btn btn-grey text-xl w-28" href="/">戻る</a>
             </div>
         </font>
     </div>

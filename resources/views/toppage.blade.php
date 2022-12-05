@@ -8,15 +8,13 @@
                 <div>
                     {{-- ログインページへのリンク --}}
                     <h2>ログインする</h2>
-                    <a class="btn btn-info btn-lg normal-case w-150" href="{{ route('login') }}">ログイン</a>
+                    <a class="btn btn-info btn-lg text-xl w-1/2" href="{{ route('login') }}">ログイン</a>
                 </div>
                 <div>
                     {{-- ユーザ登録ページへのリンク --}}
                     <h2>会員登録をする</h2>
-                    <a class="btn btn-error btn-lg normal-case w-24" href="{{ route('register') }}">登録</a>
+                    <a class="btn btn-error btn-lg text-xl w-1/2" href="{{ route('register') }}">登録</a>
                 </div>
-                
-                
             </div>
         </div>
     </div>

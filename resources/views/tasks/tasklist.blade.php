@@ -1,5 +1,5 @@
 <div class="col-span-12">
-    {{-- 作成・編集・削除ボタン--}}
+    {{-- 作成ボタン--}}
     @include('tasks.buttons')
     {{-- タスクタブ表示 --}}
     @include('tasks.tasktabs')

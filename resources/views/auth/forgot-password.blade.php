@@ -1,33 +1,26 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+@extends('layouts.app')
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-        </div>
+@section('content')
 
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
+    <div class="prose mx-auto text-center">
+        <div class="text-4xl mt-12">パスワード再登録</div>
+    </div>
 
-        <form method="POST" action="{{ route('password.email') }}">
+    <div class="flex justify-center  mt-8 mb-16">
+        <form method="POST" action="{{ route('password.email') }}" class="w-1/2">
             @csrf
 
-            <!-- Email Address -->
-            <div>
-                <x-input-label for="email" :value="__('Email')" />
-                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <div class="form-control mt-10">
+                <label for="email" class="label">
+                    <span class="label-text">メールアドレス</span>
+                </label>
+                <input type="email" name="email" class="input input-bordered w-full" required autofocus>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <x-primary-button>
-                    {{ __('Email Password Reset Link') }}
-                </x-primary-button>
+            <div class="flex justify-between mt-16 mx-24">
+                <button type="submit" class="btn btn-primary btn-block normal-case w-28">送信</button>
+                <a class="btn btn-grey w-28" href="/">戻る</a>
             </div>
-        </form>
-    </x-auth-card>
-</x-guest-layout>
+        </font>
+    </div>
+@endsection

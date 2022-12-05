@@ -21,12 +21,7 @@ class TasksController extends Controller
         2 => '中',
         3 => '低'
     ];
-    
-    // function __construct()
-    // {
-    //     $this->tasks = new Task;
-    // }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -35,34 +30,7 @@ class TasksController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            
-            $task = new Task;
-            
-            $tasks = $task
-                        ->where('user_id', Auth::id())
-                        ->where('status', 2)
-                        ->orderByRaw('deadline asc, importance asc, title asc')
-                        ->get();
-                        
-            foreach($tasks as $value)
-            {
-                $check = $value->importance;
-
-                // 状態を名称に変換
-                switch ($value->importance) {
-                    case 1:
-                        $value->importance = $this->importance[1];
-                        break;
-                    case 2:
-                        $value->importance = $this->importance[2];
-                        break;
-                    case 3:
-                        $value->importance = $this->importance[3];
-                        break;
-                }
-            }
-
-            return view('tasks.index', ['tasks' => $tasks]);
+            return redirect('tasks/show');
         } else {
             return view('toppage');
         }
@@ -112,9 +80,6 @@ class TasksController extends Controller
     {
         if (Auth::check()) {
             
-            
-            // $tasks = $this->tasks->where('user_id', Auth::id());
-            
             $setCreateValue = [
                 'importance' => $this->importance,
                 'status' => $this->status           
@@ -134,6 +99,14 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => 'required|max:30',
+            'content' => 'required|max:50',
+            'importance' => 'required|numeric',
+            'status' => 'required|numeric',
+            'deadline' => 'required|date|after:today',
+        ]);
+        
         $task = new Task;
         
         // postデータをセット
@@ -158,7 +131,32 @@ class TasksController extends Controller
      */
     public function show($id)
     {
-        //
+        $task = new Task;
+        // dd('okokok');
+        $tasks = $task
+                    ->where('user_id', Auth::id())
+                    ->where('status', 2)
+                    ->orderByRaw('deadline asc, importance asc, title asc')
+                    ->get();
+                    
+        foreach($tasks as $value)
+        {
+            $check = $value->importance;
+
+            // 状態を名称に変換
+            switch ($value->importance) {
+                case 1:
+                    $value->importance = $this->importance[1];
+                    break;
+                case 2:
+                    $value->importance = $this->importance[2];
+                    break;
+                case 3:
+                    $value->importance = $this->importance[3];
+                    break;
+            }
+        }
+        return view('tasks.index')->with(['tasks' => $tasks]);
     }
 
     /**
@@ -169,6 +167,7 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
+
         $task = Task::find($id);
         
         $setEditValue = [
@@ -188,6 +187,16 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        // バリデーション設定
+        $request->validate([
+            'title' => 'required|max:30',
+            'content' => 'required|max:50',
+            'importance' => 'required|numeric',
+            'status' => 'required|numeric',
+            'deadline' => 'required|date',
+        ]);        
+        
         $task = Task::find($id);
         
         $task->title = $request->title;
@@ -216,5 +225,16 @@ class TasksController extends Controller
         }
         
         return redirect('/');
+    }
+    
+    public function varidation()
+    {
+        $request->validate([
+            'title' => 'required|max:30',
+            'content' => 'required|max:50',
+            'importance' => 'required|numeric',
+            'status' => 'required|numeric',
+            'deadline' => 'required|date|after:today',
+        ]);
     }
 }

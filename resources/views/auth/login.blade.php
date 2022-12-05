@@ -23,6 +23,15 @@
                 </label>
                 <input type="password" name="password" class="input input-bordered w-full">
             </div>
+
+            <div class="mt-10">
+                @if (Route::has('password.request'))
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
+                        {{ __('パスワードを忘れましたか？') }}
+                    </a>
+                @endif
+            </div>
+
             <div class="flex justify-between mt-16 mx-24">
                 <button type="submit" class="btn btn-primary btn-block normal-case w-28">ログイン</button>
                 <a class="btn btn-grey w-28" href="/">戻る</a>

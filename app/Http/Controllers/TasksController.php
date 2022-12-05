@@ -3,19 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use Auth;
 
 class TasksController extends Controller
 {
-    private $tasks;
-    
+    /** @var array 状態 */
     private $status = [
         1 => '未対応',
         2 => '対応中',
         3 => '完了'
     ];
     
+    /** @var array 重要度 */
     private $importance = [
         1 => '高',
         2 => '中',
@@ -23,122 +24,84 @@ class TasksController extends Controller
     ];
 
     /**
-     * Display a listing of the resource.
+     * ログイン済or未ログインか判定して処理する
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        if (Auth::check()) {
-            return redirect('tasks/show');
-        } else {
+        if (!Auth::check()) {
             return view('toppage');
         }
+        return redirect('working');
     }
     
+    /**
+     * 未対応タスクデータ取得
+     *
+     * @return array $tasks:未対応タスクデータ
+     */
     public function notWorking()
     {
-        if (Auth::check()) {
-            
-            $task = new Task;
-        
-            $tasks = $task
-                        ->where('user_id', Auth::id())
-                        ->where('status', 1)
-                        ->orderByRaw('deadline asc, importance asc, title asc')
-                        ->get();
-            return view('tasks.index', ['tasks' => $tasks]);
-        } else {
+        if (!Auth::check()) {
             return view('toppage');
         }
+        
+        $tasks = $this->getTaskCategoryDate(1);
+    
+        return view('tasks.index', ['tasks' => $tasks]);
     }
     
+    /**
+     * 対応中タスクデータ取得
+     *
+     * @return array $tasks:対応中タスクデータ
+     */
+    public function working()
+    {
+        if (!Auth::check()) {
+            return view('toppage');
+        }
+    
+        $tasks = $this->getTaskCategoryDate(2);
+    
+        return view('tasks.index', ['tasks' => $tasks]);
+    }
+    
+    /**
+     * 完了タスクデータ取得
+     *
+     * @return array $tasks:完了タスクデータ
+     */
     public function finishWork()
     {
-        if (Auth::check()) {
-            
-            $task = new Task;
-        
-            $tasks = $task
-                        ->where('user_id', Auth::id())
-                        ->where('status', 3)
-                        ->orderByRaw('deadline asc, importance asc, title asc')
-                        ->get();
-
-            return view('tasks.index', ['tasks' => $tasks]);
-        } else {
+        if (!Auth::check()) {
             return view('toppage');
-        }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        if (Auth::check()) {
             
-            $setCreateValue = [
-                'importance' => $this->importance,
-                'status' => $this->status           
-            ];
-
-            return view('tasks.create')->with($setCreateValue);
-        } else {
-            return view('toppage');
         }
+        
+        $tasks = $this->getTaskCategoryDate(3);
+
+        return view('tasks.index', ['tasks' => $tasks]);
     }
-
+    
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 対応カテゴリ別のタスク取得
+     * 
+     * @param int $status 1:未対応, 2:対応中, 3:完了
+     * @return array $tasks:対応カテゴリ別のタスクデータ
      */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|max:30',
-            'content' => 'required|max:50',
-            'importance' => 'required|numeric',
-            'status' => 'required|numeric',
-            'deadline' => 'required|date|after:today',
-        ]);
-        
-        $task = new Task;
-        
-        // postデータをセット
-        $task->user_id = Auth::id();
-        $task->title = $request->title;
-        $task->content = $request->content;
-        $task->importance = $request->importance;
-        $task->status = $request->status;
-        $task->deadline = $request->deadline;
-
-        // データをSQLに保存
-        $task->save();
-        
-        return redirect('/');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    private function getTaskCategoryDate($status)
     {
         $task = new Task;
-        // dd('okokok');
+    
         $tasks = $task
-                    ->where('user_id', Auth::id())
-                    ->where('status', 2)
-                    ->orderByRaw('deadline asc, importance asc, title asc')
-                    ->get();
-                    
+                ->where('user_id', Auth::id())
+                ->where('status', $status)
+                ->orderByRaw('deadline asc, importance asc, title asc')
+                ->get();
+                
+        // 重要度を番号から名称に変更する処理
         foreach($tasks as $value)
         {
             $check = $value->importance;
@@ -156,18 +119,72 @@ class TasksController extends Controller
                     break;
             }
         }
-        return view('tasks.index')->with(['tasks' => $tasks]);
+        
+        return $tasks;
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * タスク作成画面への遷移処理
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        if (!Auth::check()) {
+            return view('toppage');
+        }
+        
+        $setCreateValue = [
+            'importance' => $this->importance,
+            'status' => $this->status           
+        ];
+
+        return view('tasks.create')->with($setCreateValue);
+    }
+
+    /**
+     * 新規タスクデータ保存処理
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(TaskRequest $request)
+    {
+        $task = new Task;
+        
+        // postデータをセット
+        $task->user_id = Auth::id();
+        $task->title = $request->title;
+        $task->content = $request->content;
+        $task->importance = $request->importance;
+        $task->status = $request->status;
+        $task->deadline = $request->deadline;
+
+        // データをDBに保存
+        $task->save();
+        
+        return redirect('/');
+    }
+
+    /**
+     * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function show($status)
+    {
+        //
+    }
+
+    /**
+     * タスク編集画面への遷移処理
+     *
+     * @param  int  $id タスクid
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
-
         $task = Task::find($id);
         
         $setEditValue = [
@@ -175,28 +192,19 @@ class TasksController extends Controller
             'importance' => $this->importance,
             'status' => $this->status,
         ];
+
         return view('tasks.taskedit')->with($setEditValue);
     }
 
     /**
-     * Update the specified resource in storage.
+     * タスクデータ更新処理
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int  $id タスクid
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-
-        // バリデーション設定
-        $request->validate([
-            'title' => 'required|max:30',
-            'content' => 'required|max:50',
-            'importance' => 'required|numeric',
-            'status' => 'required|numeric',
-            'deadline' => 'required|date',
-        ]);        
-        
         $task = Task::find($id);
         
         $task->title = $request->title;
@@ -211,9 +219,9 @@ class TasksController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * タスクデータ削除処理
      *
-     * @param  int  $id
+     * @param  int  $id タスクid
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -225,16 +233,5 @@ class TasksController extends Controller
         }
         
         return redirect('/');
-    }
-    
-    public function varidation()
-    {
-        $request->validate([
-            'title' => 'required|max:30',
-            'content' => 'required|max:50',
-            'importance' => 'required|numeric',
-            'status' => 'required|numeric',
-            'deadline' => 'required|date|after:today',
-        ]);
     }
 }

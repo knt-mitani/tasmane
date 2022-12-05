@@ -6,7 +6,7 @@
     <div class="flex justify-center text-4xl mt-12">メールアドレス変更</div>
     
     <div class="flex justify-center">
-        <form method="POST" action="{{ route('change_email.update',Auth::id()) }}" class="w-1/2">
+        <form method="POST" action="{{ route('email.change',array(),false) }}" class="w-1/2">
             @csrf
             @method('PUT')
             <div class="form-control mt-8 mb-16">

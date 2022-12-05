@@ -3,79 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Task;
 use Auth;
 
 class ChangeEmailController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * メールアドレス変更画面へ遷移
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function edit()
     {
         $user = Auth::user();
         $user_email = $user->email;
-        
-        return view('change_email.emailedit', ['user_email' => $user_email]);
+
+        return view('change_email.form', ['user_email' => $user_email]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * メールアドレス更新処理
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         $new_email = $request->new_email;
 
         $request->validate([
-            'new_email' => 'required|email:filter,dns|confirmed:new_email'    
+            'new_email' => 'required|email:filter,dns|confirmed:new_email'
         ]);
         
         $user = Auth::user();
@@ -83,17 +40,7 @@ class ChangeEmailController extends Controller
             
         $get_user->email = $new_email;
         $get_user->save();
-        return redirect('/');
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect('/');
     }
 }

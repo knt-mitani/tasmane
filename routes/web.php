@@ -20,14 +20,21 @@ use App\Http\Controllers\ChangePasswordController;
 // ログインor未ログイン判定
 Route::get('/', [TasksController::class, 'index']);
 
-Route::resource('change_email', ChangeEmailController::class);
+// Route::resource('change_email', ChangeEmailController::class);
 
 Route::middleware('auth')->group(function () {
     Route::resource('tasks', TasksController::class);
     
+    // タスク一覧表示(未対応・対応中・完了タブ)
     Route::get('notWorking', [TasksController::class, 'notWorking'])->name('tasks.notWorking');
+    Route::get('working', [TasksController::class, 'working'])->name('tasks.working');
     Route::get('finishWork', [TasksController::class, 'finishWork'])->name('tasks.finishWork');
     
+    // メールアドレス変更処理
+    Route::get('email_change', [ChangeEmailController::class, 'edit'])->name('email.form');
+    Route::put('email_change', [ChangeEmailController::class, 'update'])->name('email.change');
+    
+    // パスワード変更処理
     Route::get('password_change', [ChangePasswordController::class, 'edit'])->name('password.form');
     Route::put('password_change', [ChangePasswordController::class, 'update'])->name('password.change');
 

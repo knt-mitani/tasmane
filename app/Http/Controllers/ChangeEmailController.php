@@ -34,7 +34,7 @@ class ChangeEmailController extends Controller
         $new_email = $request->new_email;
 
         $request->validate([
-            'new_email' => 'required|email:filter,dns|confirmed:new_email'
+            'new_email' => 'required|string|email:filter,dns|max:255|confirmed:new_email'
         ]);
         
         $user = Auth::user();

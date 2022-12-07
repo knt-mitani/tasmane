@@ -36,7 +36,7 @@
                 </label>
                 <input type="password" name="password_confirmation" class="input input-bordered w-full">
             </div>
-            <div class="flex justify-between mt-16 mx-24">
+            <div class="flex justify-between mt-16 mx-12">
                 <button type="submit" class="btn btn-error text-xl w-28">登録</button>
                 <a class="btn btn-grey text-xl w-28" href="/">戻る</a>
             </div>

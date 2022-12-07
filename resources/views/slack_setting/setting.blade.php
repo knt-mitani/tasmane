@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
-
     <div class="flex justify-center text-4xl mt-12">slack設定</div>
     
     <div class="flex justify-center">

@@ -24,11 +24,11 @@ class TaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:30',                                       // タイトル
-            'content' => 'required|max:50',                                     // 内容
-            'importance' => 'required|numeric',                                 // 重要度
-            'status' => 'required|numeric',                                     // 状態
-            'deadline' => 'required|date',                                      // 期日
+            'title' => 'required|max:30',           // タイトル
+            'content' => 'required|max:50',         // 内容
+            'importance' => 'required|numeric',     // 重要度
+            'status' => 'required|numeric',         // 状態
+            'deadline' => 'required|date',          // 期日
         ];
     }
 }

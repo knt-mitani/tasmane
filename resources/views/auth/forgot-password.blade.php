@@ -9,7 +9,6 @@
     <div class="flex justify-center  mt-8 mb-16">
         <form method="POST" action="{{ route('password.email') }}" class="w-1/2">
             @csrf
-
             <div class="form-control mt-10">
                 <label for="email" class="label">
                     <span class="label-text">メールアドレス</span>

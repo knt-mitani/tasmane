@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Auth;
 
 class ChangePasswordController extends Controller
@@ -16,7 +17,14 @@ class ChangePasswordController extends Controller
     {
         $user = Auth::user();
         
-        dd(password_hash($request->current_password, PASSWORD_DEFAULT));
+        // // パスワードリセット処理
+        // function ($user) use ($request) {
+        //     $user->forceFill([
+        //         'password' => Hash::make($request->password),
+        //         'remember_token' => Str::random(60),
+        //     ])->save();
+        //     event(new PasswordReset($user));
+        // }        
         
         if(!password_verify($request->current_passowrd, $user->password)) {
             dd(password_verify($request->current_passowrd, $user->password));

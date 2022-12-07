@@ -17,8 +17,10 @@ class ChangeEmailController extends Controller
     {
         $user = Auth::user();
         $user_email = $user->email;
+        
+        $setEmail = ['user_email' => $user_email];
 
-        return view('change_email.form', ['user_email' => $user_email]);
+        return view('change_email.form')->with($setEmail);
     }
 
     /**

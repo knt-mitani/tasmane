@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\TaskRequest;
+use App\Http\Controllers\SlackController;
+use App\Models\SlackChannels;
 use App\Models\Task;
 use Auth;
 
@@ -95,6 +97,7 @@ class TasksController extends Controller
     {
         $task = new Task;
     
+        // タスク表示データ取得
         $tasks = $task
                 ->where('user_id', Auth::id())
                 ->where('status', $status)
@@ -151,16 +154,15 @@ class TasksController extends Controller
     public function store(TaskRequest $request)
     {
         $task = new Task;
-        
-        // postデータをセット
-        $task->user_id = Auth::id();
-        $task->title = $request->title;
-        $task->content = $request->content;
-        $task->importance = $request->importance;
-        $task->status = $request->status;
-        $task->deadline = $request->deadline;
 
-        // データをDBに保存
+        // postデータをセット
+        $task->user_id =Auth::id();                 // ユーザid
+        $task->title = $request->title;             // タイトル
+        $task->content = $request->content;         // 内容
+        $task->importance = $request->importance;   // 重要度
+        $task->status = $request->status;           // 状態
+        $task->deadline = $request->deadline;       // 期限
+
         $task->save();
         
         return redirect('/');
@@ -187,10 +189,16 @@ class TasksController extends Controller
     {
         $task = Task::find($id);
         
+        $slackChannels = new SlackChannels;
+        
+        // ユーザーのslack機能設定データ取得
+        $use_slack = $slackChannels::where('user_id', Auth::id())->first();
+        
         $setEditValue = [
-            'task' => $task,
-            'importance' => $this->importance,
-            'status' => $this->status,
+            'task' => $task,                        // 編集するタスクデータ
+            'importance' => $this->importance,      // 重要度
+            'status' => $this->status,              // 状態
+            'use_slack' => $use_slack->use_slack,   // slack送信機能の選択状態
         ];
 
         return view('tasks.taskedit')->with($setEditValue);
@@ -206,16 +214,24 @@ class TasksController extends Controller
     public function update(Request $request, $id)
     {
         $task = Task::find($id);
-        
-        $task->title = $request->title;
-        $task->content = $request->content;
-        $task->importance = $request->importance;
-        $task->status = $request->status;
-        $task->deadline = $request->deadline;
+
+        $task->title = $request->title;             // タイトル
+        $task->content = $request->content;         // 内容
+        $task->importance = $request->importance;   // 重要度
+        $task->status = $request->status;           // 状態
+        $task->deadline = $request->deadline;       // 期限
         
         $task->save();
         
+        // 状態が完了 かつ slack機能ONの場合、slack送信
+        if( $request->status == 3 && $request->use_slack == "on")
+        {
+            $slack = new SlackController;
+            $slack->send($request->title);
+        }
+        
         return redirect('/');
+        
     }
 
     /**

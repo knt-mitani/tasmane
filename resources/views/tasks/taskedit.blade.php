@@ -53,6 +53,15 @@
                     <span class="label-text text-lg">期限</span>
                 </label>
                 <input type="date" class="input input-bordered w-full" value="{{ old('deadline', $task->deadline) }}" name="deadline">
+                @if ($use_slack == "1")
+                    <label for"title" class="label mt-10">
+                        <span class="label-text text-lg">slack送信機能を使う (状態が完了のみ送信)</span>
+                        <label class="label cursor-pointer">
+                            <input type="checkbox"  name="use_slack" value='on' class="checkbox checkbox-error" />
+                        </label>
+                    </label>
+                @endif
+
                 <div class="flex justify-between mt-16 mx-12">
                     <button type="submit" class="btn bg-blue-600 text-xl w-28">保存</button>
                     <a class="btn btn-grey text-xl w-28" href="{{ route('tasks.index') }}">戻る</a>

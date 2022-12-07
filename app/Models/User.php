@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\SlackChannels;
 use App\Models\Task;
 
 class User extends Authenticatable
@@ -46,5 +47,10 @@ class User extends Authenticatable
     public function tasks()
     {
         return $this->hasMany(Task::class);
+    }
+    
+    public function slackChannels()
+    {
+        return $this->hasOne(SlackChannels::class);
     }
 }

@@ -13,14 +13,14 @@
                 <label for="name" class="label">
                     <span class="label-text text-lg">名前</span>
                 </label>
-                <input type="text" name="name" class="input input-bordered w-full">
+                <input type="text" name="name" class="input input-bordered w-full" value="{{ old('name') }}">
             </div>
 
             <div class="form-control my-4">
                 <label for="email" class="label">
                     <span class="label-text text-lg">メールアドレス</span>
                 </label>
-                <input type="email" name="email" class="input input-bordered w-full">
+                <input type="email" name="email" class="input input-bordered w-full" value="{{ old('email') }}">
             </div>
 
             <div class="form-control mt-10">

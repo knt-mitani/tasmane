@@ -55,7 +55,7 @@
                 <input type="date" class="input input-bordered w-full" value="{{ old('deadline', $task->deadline) }}" name="deadline">
                 @if ($use_slack == "1")
                     <label for"title" class="label mt-10">
-                        <span class="label-text text-lg">slack送信機能を使う (状態が完了のみ送信)</span>
+                        <span class="label-text text-lg">Slack送信機能を使う (状態が完了のみ送信)</span>
                         <label class="label cursor-pointer">
                             <input type="checkbox"  name="use_slack" value='on' class="checkbox checkbox-error" />
                         </label>

@@ -21,7 +21,7 @@
                 </label>
                 {{-- 内容入力 --}}
                 <label for"title" class="label mt-10">
-                    <span class="label-text text-lg">slack URL</span>
+                    <span class="label-text text-lg">Slack Webhook URL</span>
                 </label>
                 <input type="text" class="input input-bordered w-full" value="{{ old('url', $url) }}" name="url">
 

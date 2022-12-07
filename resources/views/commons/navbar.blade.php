@@ -2,7 +2,7 @@
     <nav class="navbar bg-info text-neutral-conten">
         {{-- トップページ --}}
         <div class="flex-1">
-            <h1><a class="btn btn-ghost text-2xl" href="/">タスマネ</a></h1>
+            <h1><a class="btn btn-ghost text-2xl" href="/">たすまね</a></h1>
         </div>
         
         <div class="flex-none">
@@ -11,7 +11,7 @@
                 <div class="dropdown dropdown-end">
                     <button type="button" tabindex="0" class="btn btn-ghost text-lg">
                         @if (Auth::check())
-                            {{ Auth::user()->name }} さん
+                            ようこそ {{ Auth::user()->name }}さん
                         @else
                             ようこそ
                         @endif

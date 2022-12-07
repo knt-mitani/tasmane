@@ -4,7 +4,7 @@
     <div class="prose hero bg-200 mx-auto max-w-full">
         <div class="hero-content text-center my-10">
             <div class="max-w-md mb-10">
-                <h1>タスマネアプリへようこうそ！</h1>
+                <h1>たすまねアプリへようこうそ！</h1>
                 <div>
                     {{-- ログインページへのリンク --}}
                     <h2>ログインする</h2>

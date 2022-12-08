@@ -55,6 +55,10 @@ class RegisteredUserController extends Controller
         return redirect(RouteServiceProvider::HOME);
     }
 
+    /**
+     * ユーザ登録時、slackの初期設定値をDBへ登録する処理
+     *
+     */
     public function makeSlackSetting()
     {
         $slack_channels = new SlackChannels;

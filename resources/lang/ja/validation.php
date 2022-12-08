@@ -143,6 +143,21 @@ return [
         'deadline' => [
             'after' => ':attributeには、今日より後の日付を指定してください。',
         ],
+        'importance' => [
+            'integer' => ':attributeには、高・中・低のいずれかを選択してください。',
+            'max' => ':attributeには、高・中・低のいずれかを選択してください。',
+            'min' => ':attributeには、高・中・低のいずれかを選択してください。',
+        ],
+        'status' => [
+            'integer' => ':attributeには、未対応・対応中・完了のいずれかを選択してください。',
+            'max' => ':attributeには、未対応・対応中・完了のいずれかを選択してください。',
+            'min' => ':attributeには、未対応・対応中・完了のいずれかを選択してください。',
+        ],
+        'use_slack' => [
+            'integer' => ':attributeには、ON・OFFのいずれかを選択してください。',
+            'max' => ':attributeには、ON・OFFのいずれかを選択してください。',
+            'min' => ':attributeには、ON・OFFのいずれかを選択してください。',
+        ],
     ],
     
 

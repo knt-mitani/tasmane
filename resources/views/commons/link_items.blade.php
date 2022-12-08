@@ -3,8 +3,6 @@
     <li><a class="link link-hover" href="{{ route('email.form') }}">メールアドレス変更</a></li>
     <li class="divider lg:hidden"></li>
     {{-- パスワード変更へのリンク --}}
-    <li class="divider lg:hidden"></li>
-    {{-- パスワード変更へのリンク --}}
     <li><a class="link link-hover" href="{{ route('slack.setting') }}">Slack設定</a></li>
     <li class="divider lg:hidden"></li>
     {{-- ログアウトへのリンク --}}

@@ -43,7 +43,7 @@ class SlackController extends Controller
         
         // 初期バリデーション条件
         $validateRules = [
-            'use_slack' => 'required'    
+            'use_slack' => 'required|integer|min:0|max:1'
         ];
         
         // slack機能ONならば、urlのバリデーションを追加

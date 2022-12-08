@@ -136,7 +136,7 @@ class TasksController extends Controller
         if (!Auth::check()) {
             return view('toppage');
         }
-        
+
         $setCreateValue = [
             'importance' => $this->importance,
             'status' => $this->status           
@@ -188,12 +188,12 @@ class TasksController extends Controller
     public function edit($id)
     {
         $task = Task::find($id);
-        
+
         $slackChannels = new SlackChannels;
-        
+
         // ユーザーのslack機能設定データ取得
         $use_slack = $slackChannels::where('user_id', Auth::id())->first();
-        
+
         $setEditValue = [
             'task' => $task,                        // 編集するタスクデータ
             'importance' => $this->importance,      // 重要度
@@ -211,7 +211,7 @@ class TasksController extends Controller
      * @param  int  $id タスクid
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TaskRequest $request, $id)
     {
         $task = Task::find($id);
 
@@ -243,11 +243,11 @@ class TasksController extends Controller
     public function destroy($id)
     {
         $task = Task::findOrFail($id);
-        
+
         if (Auth::id() === $task->user_id) {
             $task->delete();
         }
-        
+
         return redirect('/');
     }
 }

@@ -178,7 +178,7 @@ return [
         'email' => 'メールアドレス',
         'password' => 'パスワード',
         
-        'title' => 'タイトル',
+        'title' => 'タスク名',
         'content' => '内容',
         'importance' => '重要度',
         'status' => '状態',

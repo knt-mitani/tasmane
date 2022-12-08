@@ -104,14 +104,7 @@ class SlackController extends Controller
         $slackChannels = new SlackChannels;
         
         $slack_url = $slackChannels::where('user_id', Auth::id())->first();
-        
-        // $test = $slack_url->url;
-        // dd($test);
-        // foreach ($slack_url as $value){
-        // dd($value->url);
-            
-        // }
-        
+
         return $slack_url->url;
         
         // return config('app.slack_url');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Models\SlackChannels;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +49,21 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+        
+        $this->makeSlackSetting();
 
         return redirect(RouteServiceProvider::HOME);
+    }
+
+    public function makeSlackSetting()
+    {
+        $slack_channels = new SlackChannels;
+        
+        $slack_channels->user_id = Auth::id();  // ユーザid
+        $slack_channels->use_slack = 0;         // slack機能フラグ
+        $slack_channels->url = '';              // slack webhook url
+        
+        $slack_channels->save();
+        
     }
 }

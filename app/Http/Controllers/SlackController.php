@@ -25,20 +25,9 @@ class SlackController extends Controller
         // slack機能設定値を取得
         $getSlackSetting = $slack_channels::where('user_id', Auth::id())->first();
         
-        //dd($getSlackSetting);
-        
-        // DBデータnull対策
-        if(is_null($getSlackSetting)) {
-            $use_slack = 0;
-            $url = '';
-        } else {
-            $use_slack = $getSlackSetting->use_slack;
-            $url = $getSlackSetting->url;
-        }
-        
         $setSlackSetting = [
-            'use_slack' => $use_slack,
-            'url' => $url,
+            'use_slack' => $getSlackSetting->use_slack,
+            'url' => $getSlackSetting->url,
         ];
 
         return view('slack_setting.setting')->with($setSlackSetting);

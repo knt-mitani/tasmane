@@ -156,7 +156,7 @@ class TasksController extends Controller
         $task = new Task;
 
         // postデータをセット
-        $task->user_id =Auth::id();                 // ユーザid
+        $task->user_id = Auth::id();                // ユーザid
         $task->title = $request->title;             // タイトル
         $task->content = $request->content;         // 内容
         $task->importance = $request->importance;   // 重要度
